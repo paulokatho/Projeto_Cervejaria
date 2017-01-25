@@ -43,7 +43,9 @@ public class ClientesController {
 		try {
 			cadastroClienteService.salvar(cliente);
 		} catch (CpfCnpjClienteJaCadastradoException e) {
-			result.rejectValue("cpfOuCnpj", e.getMessage(), e.getMessage());
+			//aqui é uma maneira de rejeitar um valor sem ser pelas anotações do bean validation (não pode esquecer do return novo(cliente), se não ele vai passar para mensagem de Cliente salvo com sucesso!)
+			//é possivel rejeitar qualquer valor que seja necessário dessa maneira.
+			result.rejectValue("cpfOuCnpj", e.getMessage(), e.getMessage());  
 			return novo(cliente);
 		}
 		

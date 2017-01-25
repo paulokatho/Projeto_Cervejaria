@@ -36,6 +36,7 @@ public enum TipoPessoa {
 		return grupo;
 	}
 	
+	//Caso fosse necessário uma formatação específica para cada campo seria possivel fazer uma para cada.
 	public static String removerFormatacao(String cpfOuCnpj) {
 		return cpfOuCnpj.replaceAll("\\.|-|/", "");
 	}

@@ -10,6 +10,16 @@ import com.algaworks.brewer.model.Cliente;
 import com.algaworks.brewer.repository.Clientes;
 import com.algaworks.brewer.service.exception.CpfCnpjClienteJaCadastradoException;
 
+/***
+ * 
+ * @author Katho
+ *
+ *	Na classe a assinatura @PrePersist/@PreUpdate para retirar a mascara do cpf/cnpj só funciona um pouquinho antes de persistir no banco as informações.
+ *	Então aqui no findByCpfOuCnpj não vai pegar esse valor sem máscara e para isso utilizamos o cliente.getCpfOuCnpjSemFormatacao();
+ *	No enum TipoPessoa foi acrescentado: removerFormatacao(String cpfOuCnpj)
+ *	
+ */
+
 @Service
 public class CadastroClienteService {
 
