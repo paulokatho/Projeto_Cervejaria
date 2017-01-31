@@ -58,7 +58,11 @@ public class Cliente implements Serializable {
 	@Embedded
 	private Endereco endereco;
 	
-	@PrePersist @PreUpdate
+	/*O prePersist/Update só funcionam um pouquinho antes de persistir no banco, caso exista a necessidade de fazer uma busca no banco usando esse campo
+	 	como filtro é necessário tomar cuidado para não buscar antes de fazer o replace, pois o filtro seja enviado com a formatação.	 
+	 */
+	@PrePersist 
+	@PreUpdate
 	private void prePersistPreUpdate() {
 		this.cpfOuCnpj = TipoPessoa.removerFormatacao(this.cpfOuCnpj);
 	}

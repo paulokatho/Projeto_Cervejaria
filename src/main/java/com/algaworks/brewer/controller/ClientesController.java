@@ -45,7 +45,7 @@ public class ClientesController {
 		} catch (CpfCnpjClienteJaCadastradoException e) {
 			//aqui é uma maneira de rejeitar um valor sem ser pelas anotações do bean validation (não pode esquecer do return novo(cliente), se não ele vai passar para mensagem de Cliente salvo com sucesso!)
 			//é possivel rejeitar qualquer valor que seja necessário dessa maneira.
-			result.rejectValue("cpfOuCnpj", e.getMessage(), e.getMessage());  
+			result.rejectValue("cpfOuCnpj", e.getMessage(), e.getMessage());//cpfOuCnpj é o nome do field que estamos querendo rejeitar
 			return novo(cliente);
 		}
 		
