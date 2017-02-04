@@ -19,8 +19,20 @@ import com.algaworks.brewer.model.Cerveja;
 import com.algaworks.brewer.repository.filter.CervejaFilter;
 import com.algaworks.brewer.repository.paginacao.PaginacaoUtil;
 
+/***
+ * 
+ * @author Katho
+ *
+ *	Impelementando a interface CervejasQueries.
+ *
+ *	Utilizando o metodo filtrar() já corrige o erro n+1 que faz vários acessos ao banco para trazer, por exemplo o "estilo", pois com a busca do .findAll() do jpaConfig ele faz uma nova pesquisa para cada linha que tem em estilo do banco.
+ *	Nesse caso ele faz um innerJoin de cerveja com estilo, chamado fatch de cerveja com estilo.
+ *	
+ */
 public class CervejasImpl implements CervejasQueries {
 
+	//Abaixo é para injetar o Entity manager, para conseguir pegar a Session e utilizar as classes que são dessa sessão com manager.unwrap(...)
+	//Não utiliza o @Autowired aqui para injetar o manager usar o @PersistenceContext
 	@PersistenceContext
 	private EntityManager manager;
 	

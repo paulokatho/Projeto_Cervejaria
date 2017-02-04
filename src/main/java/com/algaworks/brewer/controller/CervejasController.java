@@ -57,7 +57,7 @@ public class CervejasController {
 		return new ModelAndView("redirect:/cervejas/novo");
 	}
 	
-	@GetMapping
+	@GetMapping //Essa anotação só funciona a partir do java 8
 	public ModelAndView pesquisar(CervejaFilter cervejaFilter, BindingResult result
 			, @PageableDefault(size = 2) Pageable pageable, HttpServletRequest httpServletRequest) {
 		ModelAndView mv = new ModelAndView("cerveja/PesquisaCervejas");
