@@ -19,3 +19,4 @@ public class CidadeConverter implements Converter<String, Cidade> {
 	}
 
 }
+
