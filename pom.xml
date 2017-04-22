@@ -54,6 +54,10 @@
 		
 		<!-- Thymeleaf extras data attribute -->
 		<thymeleaf-extras-data-attribute.version>2.0.1</thymeleaf-extras-data-attribute.version>
+		
+		<!-- Cache - Guava -->
+		<guava.version>19.0</guava.version>
+		
 	</properties>
 
 	<build>
@@ -218,6 +222,20 @@
     		<artifactId>thymeleaf-extras-data-attribute</artifactId>
     		<version>${thymeleaf-extras-data-attribute.version}</version>
     		<scope>compile</scope>
+		</dependency>
+		
+		<!-- Cache - Guava - usado na aula 17.3/ -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<!-- Spring Context Support / usado junto com o Cache Guava aula 17.3 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<scope>compile</scope>
 		</dependency>
 		
 	</dependencies>

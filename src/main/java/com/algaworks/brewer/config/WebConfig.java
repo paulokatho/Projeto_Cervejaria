@@ -2,11 +2,12 @@ package com.algaworks.brewer.config;
 
 import java.math.BigDecimal;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.BeansException;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
+import org.springframework.cache.guava.GuavaCacheManager;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
@@ -35,6 +36,7 @@ import com.algaworks.brewer.controller.converter.EstadoConverter;
 import com.algaworks.brewer.controller.converter.EstiloConverter;
 import com.algaworks.brewer.thymeleaf.BrewerDialect;
 import com.github.mxab.thymeleaf.extras.dataattribute.dialect.DataAttributeDialect;
+import com.google.common.cache.CacheBuilder;
 
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 
@@ -107,13 +109,24 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 		return new FixedLocaleResolver(new Locale("pt", "BR"));
 	}
 	
-	/*
+	/* Aula 17.1 e 17.2
 	 *	Preciso deste método quando vou deixar algum método em cache, nesse caso esta´o cidades controller da aula 17-1 
 	 */
-	@Bean
+/*	@Bean //esse cache não é muito recomendado por ser bem limitado, somente para aplicações bem pequenas ou coisas bem simples
 	public CacheManager cacheManager() {
 		return new ConcurrentMapCacheManager();
-	}
+	}*/
 	
+	@Bean
+	public CacheManager cacheManager() {
+		CacheBuilder<Object, Object> cacheBuilder = CacheBuilder.newBuilder() //aqui está criando as opções que eu quero utilizar no meu cache
+				.maximumSize(3)//somente 3 estados no comboEstados no cadastro de cliente
+				.expireAfterAccess(20, TimeUnit.SECONDS);
+		
+		//Para usar esse Manager do Guava foi necessário acrescentar no pom.xml a dependencia dele para o 'spring context support'
+		GuavaCacheManager cacheManager = new GuavaCacheManager();
+		cacheManager.setCacheBuilder(cacheBuilder);//estas são as opções que eu quero para o cacheManager
+		return cacheManager;
+	}
 	
 }
