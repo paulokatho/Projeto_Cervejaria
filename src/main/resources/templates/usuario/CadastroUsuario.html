@@ -9,6 +9,8 @@
 	<title>Cadastro de usuário</title>
 	
 	<link rel="stylesheet" type="text/css" th:href="@{/stylesheets/vendors/bootstrap-switch.min.css}"/>
+	<!-- css para o campo data-picker -->
+	
 </head>
 
 <section layout:fragment="conteudo">
@@ -38,9 +40,17 @@
 					<input type="text" class="form-control" id="email" th:field="*{email}"/>
 				</div>
 				
+				<!-- O js e css desse campo data vai ficar no layout padrão, pois pode ser utilizado em vários lugares -->
 				<div class="form-group  col-sm-3">
 					<label for="dataNascimento" class="control-label">Data de nascimento</label>
-					<input type="text" class="form-control" id="dataNascimento" th:field="*{dataNascimento}"/>
+					<input type="text" class="form-control  js-date" id="dataNascimento" th:field="*{dataNascimento}"
+						data-provide="datepicker" data-date-orientation="bottom" data-date-language="pt-BR"
+						data-date-autoclose="true"
+						autocomplete="off"/>
+						<!-- data-date-today-highlight="true" ***serve para deixar o dia atual em destaque, 
+							mas para dt de aniversario é meio sem sentido -->
+						<!-- os atributos data-date-... serão colocados  no js para que nao precisemos ficar digitando esses 
+							atributos do html 5 toda vez que usarmos o campo data	 -->
 				</div>
 			</div>
 			

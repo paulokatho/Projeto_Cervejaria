@@ -1,6 +1,7 @@
 package com.algaworks.brewer.config;
 
 import java.math.BigDecimal;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -10,10 +11,13 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.guava.GuavaCacheManager;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
+import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
 import org.springframework.format.number.NumberStyleFormatter;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
@@ -101,6 +105,15 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 		NumberStyleFormatter integerFormatter = new NumberStyleFormatter("#,##0");
 		conversionService.addFormatterForFieldType(Integer.class, integerFormatter);
 		
+		//API datas do java 8 - aula 18-5 - usado na tela de cadastro de usuário, mas é usado para qualquer campo data
+		/*Também foi utilizado o bootstrap-datepicker para limitar o que é digitado no input data / importar no javascript/vendors
+			- bootstrap-datepicker.min.js
+			- bootstrap-datepicker.pt-BR.min.js
+		*/	
+		DateTimeFormatterRegistrar dateTimeFormatter = new DateTimeFormatterRegistrar();
+		dateTimeFormatter.setDateFormatter(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+		dateTimeFormatter.registerFormatters(conversionService);
+		
 		return conversionService;
 	}
 	
@@ -127,6 +140,30 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 		GuavaCacheManager cacheManager = new GuavaCacheManager();
 		cacheManager.setCacheBuilder(cacheBuilder);//estas são as opções que eu quero para o cacheManager
 		return cacheManager;
+	}
+	
+	/***
+	 * 	Nos campos data quanto utilizamos o data-picker do bootstrap, se digitamos alguma data inválida, ex: 90/00/0000 ele gera uma 
+	 * exception na tela e esse método é para deixar a mensagem de erro mais amigável para o usuário.
+	 * 
+	 */
+	@Bean
+	public MessageSource messageSource () {
+		ReloadableResourceBundleMessageSource bundle = new ReloadableResourceBundleMessageSource();
+		bundle.setBasename("classpath:/messages");//esse messages.properties esta dentro da pasta src/main/resources
+		/*
+		 *	//http://www.utf8-chartable.de/
+		 *	Este site serve para buscar o código utf-8 referente ao caracter que queremos buscar, ex: á. É só pegar o codigo, ex: EE09 referente ao á
+		 *	Está sendo usado em message.properties / aula 18-5 
+		 *
+		 *	Lá no messages.properties:
+		 *		typeMismatch.java.time.LocalDate = {0} inv\u00E1lida
+		 *		usuario.dataNascimento = Data de Nascimento
+		 *
+		 *** usuario.dataNascimento vai para o 'zero' de {0} e esse valor é exibido na tela.
+		 */
+		bundle.setDefaultEncoding("UTF-8");
+		return bundle;
 	}
 	
 }
