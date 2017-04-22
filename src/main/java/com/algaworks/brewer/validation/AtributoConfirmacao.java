@@ -12,9 +12,9 @@ import javax.validation.constraints.Pattern;
 
 import com.algaworks.brewer.validation.validator.AtributoConfirmacaoValidator;
 
-@Target({ ElementType.TYPE })
+@Target({ ElementType.TYPE })//Type é porque só posso usar essa anotação em cima de uma classe
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = { AtributoConfirmacaoValidator.class })
+@Constraint(validatedBy = { AtributoConfirmacaoValidator.class })//necessario ter uma classe de confirmação para constraint
 public @interface AtributoConfirmacao {
 
 	@OverridesAttribute(constraint = Pattern.class, name = "message")

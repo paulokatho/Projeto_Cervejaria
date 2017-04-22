@@ -21,6 +21,8 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import com.algaworks.brewer.validation.AtributoConfirmacao;
 
+//Para o atributo de confirmacao criou uma validacao para confirmar se as senhas são iguais
+//Essa validacao fica em cima da classe para poder ter acesso a todos os atributos dessa classe
 @AtributoConfirmacao(atributo = "senha", atributoConfirmacao = "confirmacaoSenha"
 				, message = "Confirmação da senha não confere")
 @Entity
