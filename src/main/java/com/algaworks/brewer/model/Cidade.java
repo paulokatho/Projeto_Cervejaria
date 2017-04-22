@@ -58,6 +58,14 @@ public class Cidade implements Serializable {
 	public void setEstado(Estado estado) {
 		this.estado = estado;
 	}
+	
+	/*
+	 	Quando adicionamdos no controller de cidade o @CacheEvict no método salvar, se formos adicionar alguma cidade e não selecionamos o combo
+	 	de estado não funciona a validação que tem na classe por causa que está em cache. Esse metodo esta sendo usado em "condition = #cidade.temEstado()
+	 */
+	public boolean temEstado() {
+		return estado != null;
+	}
 
 	@Override
 	public int hashCode() {
