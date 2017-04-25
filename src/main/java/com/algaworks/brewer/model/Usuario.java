@@ -50,6 +50,7 @@ public class Usuario implements Serializable {
 	private Boolean ativo;
 
 	//na doc da anotação @Size diz que suporta um list ou set e assim é possível especificar um valor mínimo
+	//Aqui não precisa de cascade, pois o grupo já, 
 	@Size(min = 1, message = "Selecione pelo menos um grupo")
 	@ManyToMany
 	@JoinTable(name = "usuario_grupo", joinColumns = @JoinColumn(name = "codigo_usuario")
@@ -121,6 +122,10 @@ public class Usuario implements Serializable {
 
 	public void setConfirmacaoSenha(String confirmacaoSenha) {
 		this.confirmacaoSenha = confirmacaoSenha;
+	}
+	
+	public boolean isNovo() {
+		return codigo == null;
 	}
 
 	@Override

@@ -14,14 +14,15 @@ import com.algaworks.brewer.model.Usuario;
 import com.algaworks.brewer.repository.Grupos;
 import com.algaworks.brewer.service.CadastroUsuarioService;
 import com.algaworks.brewer.service.exception.EmailUsuarioJaCadastradoException;
+import com.algaworks.brewer.service.exception.SenhaObrigatoriaUsuarioException;
 
 @Controller
 @RequestMapping("/usuarios")
 public class UsuariosController {
-
-	@Autowired
-	CadastroUsuarioService cadastroUsuarioService;
 	
+	@Autowired
+	private CadastroUsuarioService cadastroUsuarioService;
+
 	@Autowired
 	private Grupos grupos;
 	
@@ -43,8 +44,11 @@ public class UsuariosController {
 		} catch (EmailUsuarioJaCadastradoException e) {
 			result.rejectValue("email", e.getMessage(), e.getMessage());
 			return novo(usuario);
+		} catch (SenhaObrigatoriaUsuarioException e) {
+			result.rejectValue("senha", e.getMessage(), e.getMessage());
+			return novo(usuario);
 		}
-
+		
 		attributes.addFlashAttribute("mensagem", "Usuário salvo com sucesso");
 		return new ModelAndView("redirect:/usuarios/novo");
 	}
