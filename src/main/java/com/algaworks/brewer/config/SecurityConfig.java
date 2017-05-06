@@ -3,6 +3,7 @@ package com.algaworks.brewer.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,12 +19,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 	
 	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring()
+			.antMatchers("/layout/**")//tudo o que estiver depois de layout pode liberar(ex: css, js), pois se não na tela não permite exibir esses estilos	
+			.antMatchers("/images/**");
+	};
+	
+	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 	//*** A ORDEM EM QUE OS ITENS SÃO IMPLEMENTADOS FAZ TODA A DIFERENÇA
 		http
 			.authorizeRequests()//autoriza as requisições
-				.antMatchers("/layout/**").permitAll()//tudo o que estiver depois de layout pode liberar(ex: css, js), pois se não na tela não permite exibir esses estilos
-				.anyRequest().authenticated()//tudo tem que estar autenticado
+				.anyRequest().authenticated()//tudo tem que estar autenticado, daqui para baixo não é nada liberado e tudo que não for autenticado retorna para a tela de login
 				.and()
 			.formLogin()
 				.loginPage("/login")
