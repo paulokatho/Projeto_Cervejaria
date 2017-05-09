@@ -1,22 +1,46 @@
 package com.algaworks.brewer.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.algaworks.brewer.security.AppUserDetailsService;
+
 @EnableWebSecurity
+@ComponentScan(basePackageClasses = AppUserDetailsService.class)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication()
+			/*Esse é usado quando fizemos teste, pois ele gera o usuário somente em memória
+			@Override
+			protected void configure(AuthenticationManagerBuilder auth) throws Exception {			
+			auth.inMemoryAuthentication()
 			.withUser("admin").password("admin").roles("CADASTRO_CLIENTE");
-	}
+		}
+		*/
+		
+		@Autowired//injetanto user detail, mas para injetar aqui é necessário a assinatura @ComponentScan na classe e a implementação da classe AppUserDetailsService   
+		private UserDetailsService userDetailsService;
+		
+		/*
+		 	Aqui agora é para gravar no banco de dados e utilizar o usuario/senha cadastrado
+		 	É necessário chamar o passwordEncoder para encodar a senha.
+		 	userDetail, voce vai autenticar o usuário, mas lembra que a senha precisa encodar para fazer a validação. Quem faz a compração
+		 		da senha é o spring security, nós somente buscamos no banco de dados pelo e-mail e se está ativo.
+		 	O passwordEncoder() dentro dos parenteses serve para avisar o spring security que está encodado e para o security verificar a comparação. 
+		 */
+		@Override
+		protected void configure(AuthenticationManagerBuilder auth) throws Exception {			
+			auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+		}
+		
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
@@ -30,6 +54,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	//*** A ORDEM EM QUE OS ITENS SÃO IMPLEMENTADOS FAZ TODA A DIFERENÇA
 		http
 			.authorizeRequests()//autoriza as requisições
+				.antMatchers("/cidades/nova").hasRole("CADASTRAR_CIDADE")
+				.antMatchers("/usuarios/**").hasRole("CADASTRAR_USUARIO")
 				.anyRequest().authenticated()//tudo tem que estar autenticado, daqui para baixo não é nada liberado e tudo que não for autenticado retorna para a tela de login
 				.and()
 			.formLogin()
