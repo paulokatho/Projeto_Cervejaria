@@ -1,5 +1,6 @@
 package com.algaworks.brewer.repository.helper.usuario;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
@@ -24,5 +25,15 @@ public class UsuariosImpl implements UsuariosQueries{
 			setParamenter é para o parametro email que pega o resultList.stream.findFirst é da API java 8 que facilita no caso do usuario ser nulo.
 		*/
 	}
+
+	@Override
+	public List<String> permissoes(Usuario usuario) {
+		return manager.createQuery(
+				"select distinct p.nome from Usuario u inner join u.grupos g inner join g.permissioes p where u = :usuario", String.class)
+				.setParameter("usuario", usuario)
+				.getResultList();
+	}
+	
+	
 
 }
