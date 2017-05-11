@@ -2,8 +2,10 @@ package com.algaworks.brewer.security;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -44,9 +46,21 @@ public class AppUserDetailsService implements UserDetailsService{
 	private Collection<? extends GrantedAuthority> getPermissoes(Usuario usuario) {
 		Set<SimpleGrantedAuthority> authorities = new HashSet<>();
 		
-		12:57
 		// Lista permissoes do usuario
+		List<String> permissoes = usuarios.permissoes(usuario);
+		//permissoes.forEach(p -> authorities.add(new SimpleGrantedAuthority("ROLE_" + p.toUpperCase())));//ROLE_ concatena com hasRole que tem em SecurityConfig
+		permissoes.forEach(p -> authorities.add(new SimpleGrantedAuthority(p.toUpperCase())));
 		return authorities;
+		
+		/*
+	 	Obs: O ROLE_ que está comentado é porque em SecurityConfig no hasRole está somente "CADASTRAR_USUARIO", por exemplo.
+	 			E sempre tem que ter o ROLE_ quando se utilizar o hasRole, ou então pode-se acrescentar o ROLE_ direto no banco nas permissoes
+	 			assim: ROLE_CADASTRAR_USUARIO. De qualquer forma em algum lugar tem que estar assim.
+	 			Mas tem outra opção que é o hasAuthority aí não precisa ter o ROLE_
+	 			
+	 			Na aula 19-6 foi feito roll back no banco para poder cadastrar o ROLE_ e ficar armazenado no banco certinho, e também tem 
+	 			que apagar o schema, permissao, grupo_permissao e usuario_grupo, conforme a aula no minuto 21:48
+		 */
 	}
 
 }

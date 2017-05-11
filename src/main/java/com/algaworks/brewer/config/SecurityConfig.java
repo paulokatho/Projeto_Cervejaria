@@ -54,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	//*** A ORDEM EM QUE OS ITENS SÃO IMPLEMENTADOS FAZ TODA A DIFERENÇA
 		http
 			.authorizeRequests()//autoriza as requisições
-				.antMatchers("/cidades/nova").hasRole("CADASTRAR_CIDADE")//as Role() são recuperadas no banco no grupo de usuarios
+				.antMatchers("/cidades/nova").hasRole("CADASTRAR_CIDADE")// Role() são recuperadas no banco no grupo de usuarios
 				.antMatchers("/usuarios/**").hasRole("CADASTRAR_USUARIO")
 				.anyRequest().authenticated()//tudo tem que estar autenticado, daqui para baixo não é nada liberado e tudo que não for autenticado retorna para a tela de login
 				.and()
@@ -62,7 +62,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.loginPage("/login")
 				.permitAll()
 				.and()
+			.exceptionHandling()
+				.accessDeniedPage("/403")
+				.and()
 			.csrf().disable();
+		//Obs: Ver em AppUserDetailsService para ver o porque de se usar o hasRole e não hasA uthority
 	}
 	
 	@Bean
