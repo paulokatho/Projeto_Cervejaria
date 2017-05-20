@@ -21,7 +21,7 @@ public class UsuariosImpl implements UsuariosQueries{
 				.setParameter("email", 	email).getResultList().stream().findFirst();
 		
 		/*
-			createQuery é jpql e (:email) é o parametro que vem de (String email) e Usuario.class é para termos a classe usuario disponível
+			createQuery é JPQL e (:email) é o parametro que vem de (String email) e Usuario.class é para termos a classe usuario disponível
 			setParamenter é para o parametro email que pega o resultList.stream.findFirst é da API java 8 que facilita no caso do usuario ser nulo.
 		*/
 	}

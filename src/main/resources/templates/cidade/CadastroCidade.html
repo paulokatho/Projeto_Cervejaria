@@ -30,6 +30,9 @@
 	</div>
 	
 	<div class="container-fluid">
+	<!-- O th:action também ajuda a proteger o sistema contra ataques csrf, pois ele acrescenta um token "hidden" na página e assim
+		o acesso só é possivel a partir deste token gerado pelo servidor. No ataque, uma outra página que não tiver esse token
+		não vai permitir acesso, vai dar erro de acesso negado!!! -->
 		<form method="POST" th:object="${cidade}" th:action="@{/cidades/nova}">
 			<brewer:message/>
 			

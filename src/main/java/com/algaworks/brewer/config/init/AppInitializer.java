@@ -4,7 +4,6 @@ import javax.servlet.Filter;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletRegistration.Dynamic;
 
-import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import com.algaworks.brewer.config.JPAConfig;
@@ -29,13 +28,21 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 		return new String[] { "/" };
 	}
 	
-	@Override
+	/* Esse método implementando o CharacterEncondingFilter funcionou até implementarmos o Spring Security, após o security ele não 
+	 * 	funciona mais. Ele é desabilitado pelo spring. O método getServletFilters() será impelemntado abaixo e o CharacterEncoding será
+	 * 	implementado no SecurityInitializer, nesse filtro de segurança para o que o security entenda e não bloqueie ele.
+	 * 
+	  @Override
 	protected Filter[] getServletFilters() {
 		CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
         characterEncodingFilter.setEncoding("UTF-8");
         characterEncodingFilter.setForceEncoding(true);
 		
         return new Filter[] { characterEncodingFilter };
+	}*/
+	@Override
+	protected Filter[] getServletFilters() {
+		return new Filter[] {};
 	}
 	
 	@Override

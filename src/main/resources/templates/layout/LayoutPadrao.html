@@ -14,7 +14,6 @@
 	<link rel="stylesheet" type="text/css" th:href="@{/layout/stylesheets/application.css}"/>
 	<link rel="stylesheet" type="text/css" th:href="@{/stylesheets/brewer.css}"/>
 	
-	<!-- css para os campos data, pois pode ser usado em vários views do projeto -->
 	<link rel="stylesheet" type="text/css" th:href="@{/stylesheets/vendors/bootstrap-datepicker.standalone.min.css}"/>
 	
 	<link rel="shortcut icon" th:href="@{/images/favicon.png}"/>
@@ -27,6 +26,9 @@
 	<![endif]-->
 </head>
 <body>
+<input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+<input type="hidden" name="_csrf_header" th:value="${_csrf.headerName}"/>
+
 <div class="aw-layout-page">
 	
 	<div th:replace="layout/fragments/BarraNavegacao :: navbar"></div>
@@ -43,7 +45,6 @@
 <script th:src="@{/javascripts/vendors/jquery.maskMoney.min.js}"></script>
 <script th:src="@{/javascripts/vendors/jquery.mask.min.js}"></script>
 
-<!-- js para os campos data, pois pode ser usado em vários views do projeto -->
 <script th:src="@{/javascripts/vendors/bootstrap-datepicker.min.js}"></script>
 <script th:src="@{/javascripts/vendors/bootstrap-datepicker.pt-BR.min.js}"></script>
 

@@ -73,6 +73,29 @@ Brewer.MaskDate = (function() {
 	
 }());
 
+Brewer.Security = (function() {
+		
+	function Security() {
+		this.token = $('input[name=_csrf]').val();
+		this.header = $('input[name=_csrf_header').val();
+	}	
+	/* Com essa configuração toda vez que haver uma requisição ajax para essa página esses tokens de segurança irão ser disparados
+	 *	Ele também é responsável por fazer o model de cadastro rapido de cerveja na página de cadastro de cerveja, funcionar corretamente,
+	 *		pois sem esse token sendo passado ele não encontra os karas dentro de this.token() 
+	 */	
+	Security.prototype.enable = function() {
+		$(document).ajaxSend(function(event, jqxhr, settings) {
+			jqxhr.setRequestHeader(this.header, this.token);
+		}.bind(this));
+		
+	/*bind(this) é para pegar os this.token do contexto de function Security(), pois o prototype é do contexto de Security()*/
+	}
+	
+	return Security;
+	
+	
+}());
+
 $(function() {
 	var maskMoney = new Brewer.MaskMoney();
 	maskMoney.enable();
@@ -85,5 +108,8 @@ $(function() {
 	
 	var maskDate = new Brewer.MaskDate();
 	maskDate.enable();
+	
+	var security = new Brewer.Security();
+	security.enable();
 	
 });
