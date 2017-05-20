@@ -70,8 +70,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.accessDeniedPage("/403")
 				.and()
 			.sessionManagement()
-				.maximumSessions(1)
-				.expiredUrl("/login");
+				.invalidSessionUrl("/login");
+				//.maximumSessions(1) //maximo de sessoes permitidas é somente uma
+				//.expiredUrl("/login"); // se uma segunda requisição chegar a primeira é redirecionada para /login
 				//.and()
 			//.csrf().disable();
 		//Obs: Ver em AppUserDetailsService para ver o porque de se usar o hasRole e não hasA uthority
