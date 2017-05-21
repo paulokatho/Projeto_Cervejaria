@@ -22,7 +22,7 @@
     	<li>
      	<!-- ao colocoar o thymeleaf security extras no pom.xml ele disponibiliza esse recurso authentication / aula 19.13 
      			Foi implementado as classes appUserDetailService e UsuarioSistema -->
-    		<p class="navbar-text" th:text="${authentication.principal.usuario.nome}">Usuário</p>    		
+    		<p class="navbar-text" th:text="${#authentication.principal.usuario.nome}">Usuário</p>    		
     	</li>
     	<li>
         	<a th:href="@{/logout}"><em class="fa  fa-sign-out"></em></a>
